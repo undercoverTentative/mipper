@@ -1,9 +1,9 @@
-from src.create_tcp_socket import createUDP_Socket
+from src.create_tcp_socket import create_Socket
 import sys
 
 def main():
-    if len(sys.argv) == 1:
-        print(sys.argv)
+    sock = create_Socket('127.0.0.1')
+    sock.createTCPSocket()
 
 
 if __name__ == '__main__':
