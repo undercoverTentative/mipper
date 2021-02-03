@@ -1,18 +1,15 @@
 import socket
 
 
-class Socket:
+class createUDP_Socket:
     """class of creating a socket to preform a scan of the volatile ports"""
-
-
-
     def __init__(self, host, port):
-        self.ipAddress = '127.0.0.1'
-        self.port = 55440
+        self.host = host
+        self.port = port
 
 
 
 
     def createSocket():
-        addr = (self.ipAddress,self.port)
+        addr = (self.host,self.port)
         print(addr)
