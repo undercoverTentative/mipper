@@ -8,9 +8,9 @@ class create_Socket:
 
 
     def createTCPSocket(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            socket.setdefaulttimeout(0.01)
-            for port in range(1,65535):
+        for port in range(1,65535):
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                socket.setdefaulttimeout(0.01)
                 addr = (self.host, port)
                 result = s.connect_ex(addr)
                 if result == 0:
