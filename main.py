@@ -4,7 +4,7 @@ import sys
 def main():
 
 
-    sock = create_Socket('127.0.0.1')
+    sock = create_Socket("127.0.0.1")
     sock.UDPportscan()
 
 
