@@ -23,16 +23,15 @@ class create_Socket:
 
     def UDPportscan(self):
         s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-        s.settimeout(2)
+        s.settimeout(5)
         for port in range(1,65535):
             addr = (self.host, port)
             s.sendto(b"H",addr)
             try:
                 data = s.recvfrom(4096)
-                print(data[0])
-                if data[0] != b'':
-                    print("The following data hase been received from" + data[1] + " : " + data[1])
-            except socket.timeout:
-                print("No data received from UDP port : " + str(port) + " Port is open but the imput maybe wrong")
+                if data[0] != "":
+                    print("The following data hase been received from " + data[1] + " : " + data[1])
             except ConnectionResetError:
-                print('connection has received a reset')
+                print("Connection reset from host at: " + self.host + ":" + str(port))
+            except socket.timeout:
+                print("No response from the host at: " + self.host + ":" + str(port))
