@@ -13,6 +13,7 @@ class create_Socket:
     def TCPportscan(self):
         for dp in range(self.stport,self.endport):
             s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+            s.settimeout(5)
             try:
                 s.connect((self.host,dp))
                 print("Connetion have been made to port: " + str(dp))
@@ -25,10 +26,6 @@ class create_Socket:
                 pass
 
     def TCPsascan(self):
-<<<<<<< HEAD
-        
-=======
         for dp in range(self.stport,self.endport):
             ans = sr(IP(dst=self.host)/TCP(dport=dp,flags="S"),timeout=5,verbose=0)
             print(ans)
->>>>>>> TCP_SYN_ACK
