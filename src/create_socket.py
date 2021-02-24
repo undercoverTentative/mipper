@@ -25,4 +25,10 @@ class create_Socket:
                 pass
 
     def TCPsascan(self):
+<<<<<<< HEAD
         
+=======
+        for dp in range(self.stport,self.endport):
+            ans = sr(IP(dst=self.host)/TCP(dport=dp,flags="S"),timeout=5,verbose=0)
+            print(ans)
+>>>>>>> TCP_SYN_ACK
