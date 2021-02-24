@@ -29,3 +29,9 @@ class create_Socket:
         for dp in range(self.stport,self.endport):
             ans = sr(IP(dst=self.host)/TCP(dport=dp,flags="S"),timeout=5,verbose=0)
             print(ans)
+
+
+    def UDPscan(self):
+        for dp in range(self.stport,self.endport):
+            ans = sr(IP(dst=self.host)/UDP(dport=dp),timeout=5,verbose=0)
+            print(ans)

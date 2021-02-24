@@ -4,8 +4,8 @@ import sys
 def main():
 
 
-    sock = create_Socket("127.0.0.1",1,100)
-    sock.TCPsascan()
+    sock = create_Socket("127.0.0.1",39,40)
+    sock.UDPscan()
 
 if __name__ == '__main__':
     main()
