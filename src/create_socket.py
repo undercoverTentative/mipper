@@ -23,3 +23,6 @@ class create_Socket:
                 pass
             except:
                 pass
+
+    def TCPsascan(self):
+        
