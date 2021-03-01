@@ -16,10 +16,10 @@ class create_Socket:
             s.settimeout(5)
             try:
                 s.connect((self.host,dp))
-                print("Connetion have been made to port: " + str(dp))
+                print("Connetion have been made to: " + str(self.host) + ":" + str(dp))
                 s.close()
             except socket.timeout:
-                print("Timeout error has occured")
+                print("Response from " + str(self.host) + ":" + str(dp) + " took to long")
             except ConnectionRefusedError:
                 pass
             except:
@@ -28,7 +28,8 @@ class create_Socket:
     def TCPsascan(self):
         for dp in range(self.stport,self.endport):
             ans = sr(IP(dst=self.host)/TCP(dport=dp,flags="S"),timeout=5,verbose=0)
-            print(ans)
+            if ans:
+                print(ans)
 
 
     def UDPscan(self):
