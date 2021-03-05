@@ -5,7 +5,7 @@ def main():
 
 
     sock = create_Socket("8.8.8.8",50,56)
-    sock.UDPscan()
+    sock.TCPportscan()
 
 if __name__ == '__main__':
     main()
