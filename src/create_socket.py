@@ -19,7 +19,7 @@ class create_Socket:
                 print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
                 s.close()
             except socket.timeout:
-                print("Response from " + str(self.host) + ":" + str(dp) + " took to long")
+                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
             except ConnectionRefusedError:
                 pass
             except:
