@@ -16,14 +16,16 @@ class create_Socket:
             s.settimeout(5)
             try:
                 s.connect((self.host,dp))
-                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
+                self.Output(0,self.host,dp)
                 s.close()
             except socket.timeout:
-                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+                self.Output(1,self.host,dp)
             except ConnectionRefusedError:
                 pass
+                self.Output(1,self.host,dp)
             except:
                 pass
+                self.Output(1,self.host,dp)
 
     def TCPsascan(self):
         for dp in range(self.stport,self.endport):
@@ -31,18 +33,18 @@ class create_Socket:
             for s,r in ans:
                 result = r[TCP].flags.flagrepr()
                 if result == "SA":
-                    print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
+                    self.Output(0,self.host,dp)
                 else:
-                    print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+                    self.Output(1,self.host,dp)
 
     def UDPscan(self):
         for dp in range(self.stport,self.endport):
             ans, unans = sr(IP(dst=self.host)/UDP(dport=dp),timeout=5,verbose=0)
             if ans:
                 for s,r in ans:
-                    print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
+                    self.Output(0,self.host,dp)
             else:
-                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+                self.Output(1,self.host,dp)
 
     def XMASscan(self):
         for dp in range(self.stport,self.endport):
@@ -50,8 +52,15 @@ class create_Socket:
             if ans:
                 for s,r in ans:
                     if r[TCP].flags.flagrepr() == "RA":
-                        print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+                        self.Output(1,self.host,dp)
                     else:
-                        print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
+                        self.Output(0,self.host,dp)
             else:
-                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+                self.Output(1,self.host,dp)
+
+    def Output(self,succes, host, port):
+        """Default output for printing the results"""
+        if succes == 0:
+            print("Host: %s         Port: %d        Result: %s" % (host, port, "Succes"))
+        if succes == 1:
+            print("Host: %s         Port: %d        Result: %s" % (host, port, "Fail"))
