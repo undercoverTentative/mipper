@@ -43,3 +43,15 @@ class create_Socket:
                     print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
             else:
                 print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+
+    def XMASscan(self):
+        for dp in range(self.stport,self.endport):
+            ans, unans = sr(IP(dst=self.host)/TCP(dport=dp,flags="FPU"),timeout=5,verbose=0)
+            if ans:
+                for s,r in ans:
+                    if s[TCP].flags.flagrepr() == "RA":
+                        print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+                    else:
+                        print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
+            else:
+                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
