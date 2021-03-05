@@ -34,3 +34,12 @@ class create_Socket:
                     print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
                 else:
                     print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
+
+    def UDPscan(self):
+        for dp in range(self.stport,self.endport):
+            ans, unans = sr(IP(dst=self.host)/UDP(dport=dp),timeout=5,verbose=0)
+            if ans:
+                for s,r in ans:
+                    print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
+            else:
+                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))
