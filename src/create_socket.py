@@ -15,7 +15,7 @@ class create_Socket:
             s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             try:
                 s.connect((self.host,dp))
-                print("Connetion have been made to port: " + str(dp))
+                print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
                 s.close()
             except socket.timeout:
                 print("Timeout error has occured")
@@ -26,5 +26,10 @@ class create_Socket:
 
     def TCPsascan(self):
         for dp in range(self.stport,self.endport):
-            ans = sr(IP(dst=self.host)/TCP(dport=dp,flags="S"),timeout=5,verbose=0)
-            print(ans)
+            ans, unans = sr(IP(dst=self.host)/TCP(dport=dp,flags="S"),timeout=5,verbose=0)
+            for s,r in ans:
+                result = r[TCP].flags.flagrepr()
+                if result == "SA":
+                    print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Succes"))
+                else:
+                    print("Host: %s         Port: %d        Result: %s" % (self.host, dp, "Fail"))

@@ -4,7 +4,7 @@ import sys
 def main():
 
 
-    sock = create_Socket("127.0.0.1",1,100)
+    sock = create_Socket("93.184.220.29",79,80)
     sock.TCPsascan()
 
 if __name__ == '__main__':
