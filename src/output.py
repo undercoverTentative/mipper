@@ -4,7 +4,7 @@ import sqlite3
 import os
 
 class Output:
-    def __init__(self, host, scantype, jsonOut, xmlOut,FileName):
+    def __init__(self, host, scantype, jsonOut=0, xmlOut=0,FileName="Default"):
         self.FileName = FileName
         self.host = host
         self.scantype = scantype
@@ -27,7 +27,7 @@ class Output:
                 self.AppendToJson(result,port)
             if self.xmlout == 1:
                 self.AppendToXml(result,port)
-            print("Host: %s         Port: %d        Result: %s" % (self.host, port, result))
+            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
             self.AppendToDb(result,port)
 
         if succes == 1:
@@ -36,10 +36,12 @@ class Output:
                 self.AppendToJson(result,port)
             if self.xmlout == 1:
                 self.AppendToXml(result,port)
-            print("Host: %s         Port: %d        Result: %s" % (self.host, port, result))
+            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
             self.AppendToDb(result,port)
 
     def AppendToJson(self,result,port):
+        """ Appending result to the Json output """
+
         self.data[self.scantype].append({
             "Host": self.host,
             "Port": port,
@@ -47,35 +49,49 @@ class Output:
         })
 
     def AppendToXml(self,result,port):
+        """ Appending result to the XML output """
+
         single = ET.SubElement(self.xml, "Output")
         ET.SubElement(single, "Scan", Host=self.host, Port=str(port)).text = str(result)
 
     def AppendToDb(self,result,port):
-        self.cur.execute("INSERT INTO scan VALUES ('%s','%d','%s')" % (self.host,port,result))
+        """ Appending result to the Database output """
+
+        self.cur.execute("INSERT INTO scan VALUES ('%s','%s','%s')" % (self.host,port,result))
         self.db.commit()
 
 
     def Initjson(self):
+        """ Creating default Json vars """
+
         self.data[self.scantype] = []
 
     def Initdb(self):
+        """ Creating default database """
+
         self.cur.execute('''CREATE TABLE scan (host text, port int, result bool)''')
 
 
     def Checkdb(self):
+        """ Check if DB has been created and remove default database """
+
         dir = "./"
         files = os.listdir(dir)
         for file in files:
             if file.endswith("db"):
                 path = os.path.join(dir, file)
                 os.remove(path)
-                
+
     def writeJsonOutput(self):
+        """ Creating default Json output file """
+
         file = self.FileName + ".json"
         with open (file, 'w') as outputfile:
             json.dump(self.data,outputfile)
 
     def writeXmlOutput(self):
+        """ Creating default XML output file """
+
         file = self.FileName + ".xml"
         tree = ET.ElementTree(self.xml)
         tree.write(file)
