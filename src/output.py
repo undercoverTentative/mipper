@@ -8,36 +8,36 @@ class Output:
         self.FileName = FileName
         self.host = host
         self.scantype = scantype
-        self.data = {}
+        #self.data = {}
         self.jsonout = jsonOut
         self.xmlout = xmlOut
-        self.xml = ET.Element(self.scantype)
-        self.Checkdb()
-        self.db = sqlite3.connect(self.FileName + ".db")
-        self.cur = self.db.cursor()
-        self.Initjson()
-        self.Initdb()
+        #self.xml = ET.Element(self.scantype)
+        #self.Checkdb()
+        #self.db = sqlite3.connect(self.FileName + ".db")
+        #self.cur = self.db.cursor()
+        #self.Initjson()
+        #self.Initdb()
 
 
     def printout(self,succes,port):
         """ Default output for printing the results """
         if succes == 0:
             result = True
-            if self.jsonout == 1:
-                self.AppendToJson(result,port)
-            if self.xmlout == 1:
-                self.AppendToXml(result,port)
+            #if self.jsonout == 1:
+            #    self.AppendToJson(result,port)
+            #if self.xmlout == 1:
+            #    self.AppendToXml(result,port)
             print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
-            self.AppendToDb(result,port)
+            #self.AppendToDb(result,port)
 
         if succes == 1:
             result = False
-            if self.jsonout == 1:
-                self.AppendToJson(result,port)
-            if self.xmlout == 1:
-                self.AppendToXml(result,port)
+            #if self.jsonout == 1:
+            #    self.AppendToJson(result,port)
+            #if self.xmlout == 1:
+            #    self.AppendToXml(result,port)
             print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
-            self.AppendToDb(result,port)
+            #self.AppendToDb(result,port)
 
     def AppendToJson(self,result,port):
         """ Appending result to the Json output """
