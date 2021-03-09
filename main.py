@@ -5,7 +5,7 @@ from threading import Thread
 import queue
 import sys
 
-def main(host,Sport,Eport,scantype,threads=0):
+def main(host,Sport,Eport,scantype,threads=0,jsonout=0,xmlout=0):
     Files = PrintOutput(host,scantype)
     q = queue.Queue()
     if threads > 0:
@@ -24,7 +24,16 @@ def main(host,Sport,Eport,scantype,threads=0):
         ThreadScan(host,Sport,Eport,scantype,q)
 
     for i in range(q.qsize()):
-        print(q.get())
+        data = q.get()
+        if jsonout == 1:
+            Files.AppendToJson(data[1],data[2])
+        if xmlout == 1:
+            Files.AppendToXml(data[1],data[2])
+        Files.AppendToDb(data[1],data[2])
+    if jsonout == 1:
+        Files.writeJsonOutput()
+    if xmlout == 1:
+        Files.writeXmlOutput()
 
 
 
@@ -66,4 +75,4 @@ def SplitThreads(Sport,Eport,Threads):
 
 
 if __name__ == '__main__':
-    main("192.168.1.1",0,1,scantype="TCPportscan",threads=0)
+    main("192.168.1.1",0,100,scantype="TCPportscan",threads=20,jsonout=1,xmlout=1)
