@@ -4,11 +4,8 @@ import sqlite3
 import os
 
 class Output:
-    def __init__(self, host, scantype, jsonOut=0, xmlOut=0,FileName="Default"):
-        self.FileName = FileName
+    def __init__(self, host):
         self.host = host
-        self.scantype = scantype
-
 
     def printout(self,succes,port):
         """ Default output for printing the results """
@@ -19,4 +16,3 @@ class Output:
         if succes == 1:
             result = False
             print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
-    

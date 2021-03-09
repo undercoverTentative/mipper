@@ -1,6 +1,8 @@
 from src.create_socket import create_Socket
 from src.print_output import Output
 from src.create_output import PrintOutput
+from src.read_db import ReadDB
+
 from threading import Thread
 import queue
 import sys
@@ -35,11 +37,21 @@ def main(host,Sport,Eport,scantype,threads=0,jsonout=0,xmlout=0):
     if xmlout == 1:
         Files.writeXmlOutput()
 
+def readout(dbname):
+    result = ReadDB(FileName=dbname)
+
+    if result.DBexist == False:
+        print("Database doesnt exist! please check in the root folder if the given name of the database is present")
+    if result.DBexist == True:
+        data = result.GetDataFromDb(data_get="host,port,result,scantype")
+        output = Output(host=data[1][0])
+        for d in data:
+            output.printout(d[2],d[1])
 
 
 def ThreadScan(dsthost,Sport,Eport,scantyp,que):
     sock = create_Socket(dsthost,scantyp)
-    output = Output(host=dsthost,scantype=scantyp)
+    output = Output(host=dsthost)
     for dp in range(Sport,Eport):
         if scantyp == "TCPportscan":
             result = sock.TCPportscan(dp)
@@ -75,4 +87,5 @@ def SplitThreads(Sport,Eport,Threads):
 
 
 if __name__ == '__main__':
-    main("192.168.1.1",0,100,scantype="TCPportscan",threads=20,jsonout=1,xmlout=1)
+    #main("192.168.1.1",0,50,scantype="TCPportscan",threads=20,jsonout=0,xmlout=0)
+    readout("Default_03_09_2021_15_57_39")

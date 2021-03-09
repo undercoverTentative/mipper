@@ -42,13 +42,13 @@ class PrintOutput:
         """ Appending result to the Database output """
         res = self.resultConvert(result)
 
-        self.cur.execute("INSERT INTO scan VALUES (?,?,?)", (self.host,port,res))
+        self.cur.execute("INSERT INTO scan VALUES (?,?,?,?)", (self.host,port,res,self.scantype))
         self.db.commit()
 
     def Initdb(self):
         """ Creating default database """
 
-        self.cur.execute('''CREATE TABLE scan (host text, port int, result bool)''')
+        self.cur.execute('''CREATE TABLE scan (host text, port int, result bool, scantype text)''')
 
     def Checkdb(self):
         """ Check if DB has been created and remove default database """
@@ -60,7 +60,6 @@ class PrintOutput:
                 if file == (self.filename + ".db"):
                     date = self.dateTimeoutput()
                     self.filename = "Default" + date
-                    print(self.filename)
 
     def writeJsonOutput(self):
         """ Creating default Json output file """
