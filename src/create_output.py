@@ -2,42 +2,27 @@ import json
 import xml.etree.ElementTree as ET
 import sqlite3
 import os
+import datetime
 
-class Output:
+class PrintOutput:
     def __init__(self, host, scantype, jsonOut=0, xmlOut=0,FileName="Default"):
-        self.FileName = FileName
         self.host = host
+        if FileName == "":
+            self.filename = "Default"
+        else:
+            self.filename = FileName
         self.scantype = scantype
-        #self.data = {}
+        self.data = {}
+        self.table = "scan"
         self.jsonout = jsonOut
         self.xmlout = xmlOut
-        #self.xml = ET.Element(self.scantype)
-        #self.Checkdb()
-        #self.db = sqlite3.connect(self.FileName + ".db")
-        #self.cur = self.db.cursor()
-        #self.Initjson()
-        #self.Initdb()
+        self.xml = ET.Element(self.scantype)
+        self.Checkdb()
+        self.db = sqlite3.connect(self.filename + ".db")
+        self.cur = self.db.cursor()
+        self.Initjson()
 
 
-    def printout(self,succes,port):
-        """ Default output for printing the results """
-        if succes == 0:
-            result = True
-            #if self.jsonout == 1:
-            #    self.AppendToJson(result,port)
-            #if self.xmlout == 1:
-            #    self.AppendToXml(result,port)
-            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
-            #self.AppendToDb(result,port)
-
-        if succes == 1:
-            result = False
-            #if self.jsonout == 1:
-            #    self.AppendToJson(result,port)
-            #if self.xmlout == 1:
-            #    self.AppendToXml(result,port)
-            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
-            #self.AppendToDb(result,port)
 
     def AppendToJson(self,result,port):
         """ Appending result to the Json output """
@@ -48,7 +33,7 @@ class Output:
             "Result": result,
         })
 
-    def AppendToXml(self,result,port):
+    def AppendToXml(self,host,result,port):
         """ Appending result to the XML output """
 
         single = ET.SubElement(self.xml, "Output")
@@ -57,7 +42,7 @@ class Output:
     def AppendToDb(self,result,port):
         """ Appending result to the Database output """
 
-        self.cur.execute("INSERT INTO scan VALUES ('%s','%s','%s')" % (self.host,port,result))
+        self.cur.execute("INSERT INTO scan VALUES ('?','?','?')", (self.host,port,result))
         self.db.commit()
 
 
@@ -79,8 +64,10 @@ class Output:
         files = os.listdir(dir)
         for file in files:
             if file.endswith("db"):
-                path = os.path.join(dir, file)
-                os.remove(path)
+                if file == (self.filename + ".db"):
+                    date = self.dateTimeoutput()
+                    self.filename = "Default" + date
+                    print(self.filename)
 
     def writeJsonOutput(self):
         """ Creating default Json output file """
@@ -95,3 +82,8 @@ class Output:
         file = self.FileName + ".xml"
         tree = ET.ElementTree(self.xml)
         tree.write(file)
+
+    def dateTimeoutput(self):
+        today = datetime.datetime.now()
+        date_time = today.strftime("_%m_%d_%Y_s%H_%M_%S")
+        return date_time

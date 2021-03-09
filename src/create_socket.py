@@ -1,7 +1,7 @@
 import socket
 import struct
 from scapy.all import *
-from src.output import Output
+from src.print_output import Output
 
 
 

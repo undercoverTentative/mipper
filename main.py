@@ -1,10 +1,12 @@
 from src.create_socket import create_Socket
-from src.output import Output
+from src.print_output import Output
+from src.create_output import PrintOutput
 from threading import Thread
 import queue
 import sys
 
 def main(host,Sport,Eport,scantype,threads=0):
+    Files = PrintOutput(host,scantype)
     q = queue.Queue()
     if threads > 0:
         threadlist = []
@@ -30,7 +32,14 @@ def ThreadScan(dsthost,Sport,Eport,scantyp,que):
     sock = create_Socket(dsthost,scantyp)
     output = Output(host=dsthost,scantype=scantyp)
     for dp in range(Sport,Eport):
-        result = sock.TCPportscan(dp)
+        if scantyp == "TCPportscan":
+            result = sock.TCPportscan(dp)
+        if scantyp == "TCPsascan":
+            result = sock.TCPsascan(dp)
+        if scantyp == "UDPscan":
+            result = sock.UDPscan(dp)
+        if scantyp == "XMASscan":
+            result = sock.XMASscan(dp)
         output.printout(result["result"],result["port"])
         data = [result["scantype"],result["result"],result["port"]]
         que.put(data)
@@ -57,4 +66,4 @@ def SplitThreads(Sport,Eport,Threads):
 
 
 if __name__ == '__main__':
-    main("192.168.1.1",0,100,scantype="TCPportscan",threads=0)
+    main("192.168.1.1",0,1,scantype="TCPportscan",threads=0)
