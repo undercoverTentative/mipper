@@ -2,6 +2,8 @@ from src.create_socket import create_Socket
 from src.print_output import Output
 from src.create_output import PrintOutput
 from src.read_db import ReadDB
+from flask import Flask
+from flask import render_template
 
 from threading import Thread
 import queue
@@ -85,7 +87,15 @@ def SplitThreads(Sport,Eport,Threads):
         list.append(leftoverdata)
     return list
 
+def hello():
+    return "Hello world!"
 
-if __name__ == '__main__':
+
+#if __name__ == '__main__':
     #main("192.168.1.1",0,100,scantype="TCPportscan",threads=20,jsonout=0,xmlout=0)
-    readout("Default")
+    #readout("Default")
+app = Flask(__name__)
+
+@app.route('/<name>')
+def hello(name=None):
+    return render_template('test.html', name=name)
