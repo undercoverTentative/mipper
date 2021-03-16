@@ -87,5 +87,5 @@ def SplitThreads(Sport,Eport,Threads):
 
 
 if __name__ == '__main__':
-    main("192.168.1.1",0,100,scantype="TCPportscan",threads=20,jsonout=0,xmlout=0)
-    #readout("Default_03_09_2021_15_57_39")
+    #main("192.168.1.1",0,100,scantype="TCPportscan",threads=20,jsonout=0,xmlout=0)
+    readout("Default")

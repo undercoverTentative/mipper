@@ -24,6 +24,7 @@ class ReadDB:
             if file.endswith("db"):
                 if file == (self.filename + ".db"):
                     self.DBexist = True
+                    break
                 else:
                     self.DBexist = False
 

@@ -11,8 +11,8 @@ class Output:
         """ Default output for printing the results """
         if succes == 0:
             result = True
-            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
+            print("Host: %s         Port: %s        Result: %s\n" % (self.host, port, result))
 
         if succes == 1:
             result = False
-            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
+            print("Host: %s         Port: %s        Result: %s\n" % (self.host, port, result))
