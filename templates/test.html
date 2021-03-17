@@ -8,7 +8,7 @@
 
 <h1>Welcome to the mipper port scanner</h1>
 
-<form class="form" action="test.html" method="post">
+<form class="form" action="test" method="post">
   <label for="Host">HOST IP ADDRES</label><br>
   <input type="text" id="Host"name="Host" value="127.0.0.1"><br>
   <label for="sport">START PORT</label><br>
@@ -17,13 +17,13 @@
   <input type="text" id="eport" name="eport" value="2"><br>
   <label for="threads">THREADS</label><br>
   <input type="text" id="threads" name="threads" value="1"><br>
-  <input type="radio" id="TCP" name="TCP" value="TCP connect scan">
+  <input type="radio" id="TCP" name="scan" value="TCPportscan">
   <label for="TCP">TCP</label>
-  <input type="radio" id="TCP SYN ACK" name="TCP SYN ACK" value="TCP SYN ACK scan">
+  <input type="radio" id="TCP SYN ACK" name="scan" value="TCPsascan">
   <label for="TCP SYN ACK">TCP SYN ACK</label>
-  <input type="radio" id="UDP" name="UDP" value="UDP scan">
+  <input type="radio" id="UDP" name="scan" value="UDPscan">
   <label for="UDP">UDP</label>
-  <input type="radio" id="XMAS" name="XMAS" value="XMAS scan">
+  <input type="radio" id="XMAS" name="scan" value="XMASscan">
   <label for="XMAS">XMAS</label><br>
   <input type="submit" value="GO!!!!">
 </form>

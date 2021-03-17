@@ -2,12 +2,12 @@ from src.create_socket import create_Socket
 from src.print_output import Output
 from src.create_output import PrintOutput
 from src.read_db import ReadDB
-from flask import Flask
-from flask import render_template
-
-from threading import Thread
+from flask import Flask,render_template,request
+from threading import Thread,Lock
 import queue
 import sys
+
+lock = Lock()
 
 def main(host,Sport,Eport,scantype,threads=0,jsonout=0,xmlout=0):
     Files = PrintOutput(host,scantype)
@@ -54,7 +54,7 @@ def readout(dbname):
 def ThreadScan(dsthost,Sport,Eport,scantyp,que):
     sock = create_Socket(dsthost,scantyp)
     output = Output(host=dsthost)
-    for dp in range(Sport,Eport):
+    for dp in range(Sport,Eport + 1):
         if scantyp == "TCPportscan":
             result = sock.TCPportscan(dp)
         if scantyp == "TCPsascan":
@@ -63,7 +63,9 @@ def ThreadScan(dsthost,Sport,Eport,scantyp,que):
             result = sock.UDPscan(dp)
         if scantyp == "XMASscan":
             result = sock.XMASscan(dp)
+        lock.acquire()
         output.printout(result["result"],result["port"])
+        lock.release()
         data = [result["scantype"],result["result"],result["port"]]
         que.put(data)
 
@@ -98,4 +100,13 @@ app = Flask(__name__)
 
 @app.route('/<name>')
 def hello(name=None):
-    return render_template('test.html', name=name)
+    return render_template('test.html')
+
+@app.route('/test', methods=['POST'])
+def get_value():
+    error = None
+    if request.method == 'POST':
+        main(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']))
+    else:
+        error = "Invalid"
+    return render_template('test.html', error=error)
