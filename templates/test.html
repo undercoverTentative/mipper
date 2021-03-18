@@ -17,7 +17,7 @@
   <input type="text" id="eport" name="eport" value="2"><br>
   <label for="threads">THREADS</label><br>
   <input type="text" id="threads" name="threads" value="1"><br>
-  <input type="radio" id="TCP" name="scan" value="TCPportscan">
+  <input type="radio" id="TCP" name="scan" value="TCPportscan" checked="checked">
   <label for="TCP">TCP</label>
   <input type="radio" id="TCP SYN ACK" name="scan" value="TCPsascan">
   <label for="TCP SYN ACK">TCP SYN ACK</label>
@@ -25,6 +25,16 @@
   <label for="UDP">UDP</label>
   <input type="radio" id="XMAS" name="scan" value="XMASscan">
   <label for="XMAS">XMAS</label><br>
+  <label >XML output</label><br>
+  <input type="radio" id="XML_YES" name="xmlout" value="1" checked="checked">
+  <label for="XML_YES">YES</label>
+  <input type="radio" id="XML_NO" name="xmlout" value="0">
+  <label for="XML_NO">NO</label><br>
+  <label >Json output</label><br>
+  <input type="radio" id="JsonL_YES" name="jsonout" value="1" checked="checked">
+  <label for="XML_YES">YES</label>
+  <input type="radio" id="JSON_NO" name="xmlout" value="0">
+  <label for="JSON_NO">NO</label><br>
   <input type="submit" value="GO!!!!">
 </form>
 

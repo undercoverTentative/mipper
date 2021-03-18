@@ -2,10 +2,9 @@ from src.create_socket import create_Socket
 from src.print_output import Output
 from src.create_output import PrintOutput
 from src.read_db import ReadDB
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,send_from_directory,send_file
 from threading import Thread,Lock
-import queue
-import sys
+import sys,os,queue
 
 lock = Lock()
 
@@ -98,15 +97,44 @@ def hello():
     #readout("Default")
 app = Flask(__name__)
 
-@app.route('/<name>')
+@app.route('/')
 def hello(name=None):
     return render_template('test.html')
 
-@app.route('/test', methods=['POST'])
+@app.route('/test', methods=['GET','POST'])
 def get_value():
     error = None
+    scan = None
     if request.method == 'POST':
-        main(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']))
+        if int(request.form['sport']) > 0 and int(request.form['sport']) <= 65535:
+            if int(request.form['eport']) > 0 and int(request.form['eport']) <= 65535:
+                if int(request.form['sport']) < int(request.form['eport']):
+                    main(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']),int(request.form['jsonout']),int(request.form['xmlout']))
+                    return render_template('result.html')
+                else:
+                    error = "End port needs to be greater than start port"
+                    return render_template('error.html', error=error)
+            else:
+                error = "End port needs to be between 0-65535"
+                return render_template('error.html', error=error)
+        else:
+            error = "Start port needs to be between 0-65535"
+            return render_template('error.html', error=error)
     else:
-        error = "Invalid"
-    return render_template('test.html', error=error)
+        error = "Wrong request received"
+        return render_template('error.html', error=error)
+
+@app.route('/download_db', methods=['GET','POST'])
+def download_db():
+    path = os.path.join(app.root_path, "Default.db")
+    return send_file(path)
+
+@app.route('/download_json', methods=['GET','POST'])
+def download_json():
+    path = os.path.join(app.root_path, "Default.json")
+    return send_file(path)
+
+@app.route('/download_xml', methods=['GET','POST'])
+def download_xml():
+    path = os.path.join(app.root_path, "Default.xml")
+    return send_file(path)

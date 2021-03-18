@@ -13,6 +13,9 @@ body {
   border-radius: 5px;
   width: 500px;
   margin: auto;
+}
 
-
+.btn {
+  width: 200px;
+  background-color: rgb(102, 255, 51);
 }
