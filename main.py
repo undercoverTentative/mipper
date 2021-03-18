@@ -4,7 +4,7 @@ from src.create_output import PrintOutput
 from src.read_db import ReadDB
 from flask import Flask,render_template,request,send_from_directory,send_file
 from threading import Thread,Lock
-import sys,os,queue
+import sys,os,queue,sqlite3
 
 lock = Lock()
 
@@ -110,7 +110,11 @@ def get_value():
             if int(request.form['eport']) > 0 and int(request.form['eport']) <= 65535:
                 if int(request.form['sport']) < int(request.form['eport']):
                     main(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']),int(request.form['jsonout']),int(request.form['xmlout']))
-                    return render_template('result.html')
+                    con = sqlite3.connect("Default.db")
+                    cursor = con.cursor()
+                    cursor.execute("SELECT * FROM scan")
+                    data = cursor.fetchall()
+                    return render_template('result.html', data=data)
                 else:
                     error = "End port needs to be greater than start port"
                     return render_template('error.html', error=error)

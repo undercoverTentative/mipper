@@ -8,6 +8,26 @@
 <body>
 
 <h1>Result of the mipper port scanner</h1>
+<table class="center">
+  <thead>
+    <tr>
+        <th>Host</th>
+        <th>Port</th>
+        <th>Result</th>
+        <th>ScanType</th>
+    </tr>
+    </thead>
+    <tbody>
+     {% for row in data %}
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <a href="/download_db"><button class="btn"><i class="fa fa-download"></i> Download DB</button></a><br>
 <a href="/download_json"><button class="btn"><i class="fa fa-download"></i> Download JSON</button></a><br>
 <a href="/download_xml"><button class="btn"><i class="fa fa-download"></i> Download XML</button></a>
