@@ -112,7 +112,7 @@ def get_value():
                     main(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']),int(request.form['jsonout']),int(request.form['xmlout']))
                     con = sqlite3.connect("Default.db")
                     cursor = con.cursor()
-                    cursor.execute("SELECT * FROM scan")
+                    cursor.execute("SELECT * FROM scan ORDER BY port ASC")
                     data = cursor.fetchall()
                     return render_template('result.html', data=data)
                 else:
