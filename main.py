@@ -7,49 +7,46 @@ from src.create_output import PrintOutput
 from src.read_db import ReadDB
 import queue
 
-
-
-
 lock = Lock()
 app = Flask(__name__)
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-def run_mipper(host,Sport,Eport,scantype,threads=0,jsonout=0,xmlout=0):
+def run_mipper(host,Sport,Eport,scantype,threads,jsonout,xmlout):
     Files = PrintOutput(host,scantype)
     q = queue.Queue()
-    if threads > 0:
+    if threads > 1:
         threadlist = []
         if ((Eport - Sport) < threads):
             print("The amount of threads are more than the amount of ports to scan")
         else:
             lsOfPorts = SplitThreads(Sport,Eport,threads)
             for i in lsOfPorts:
-                t = Thread(None,ThreadScan,i[0],(host,i[0],i[1],scantype,q))
+                t = Thread(None,ThreadScan,i,(host,(i[0]),i[1],scantype,q))
                 t.start()
                 threadlist.append(t)
             for i in threadlist:
                 i.join()
-            else:
-                ThreadScan(host,Sport,Eport,scantype,q)
-            for i in range(q.qsize()):
-                data = q.get()
-                if jsonout == 1:
-                    Files.AppendToJson(data[1],data[2])
-                if xmlout == 1:
-                    Files.AppendToXml(data[1],data[2])
-                    Files.AppendToDb(data[1],data[2])
-                if jsonout == 1:
-                    Files.writeJsonOutput()
-                if xmlout == 1:
-                    Files.writeXmlOutput()
-
+    else:
+        ThreadScan(host,Sport,Eport,scantype,q)
+    for i in range(q.qsize()):
+        data = q.get()
+        if jsonout == 1:
+            Files.AppendToJson(data[1],data[2])
+        if xmlout == 1:
+            Files.AppendToXml(data[1],data[2])
+        Files.AppendToDb(data[1],data[2])
+    if jsonout == 1:
+        print("here is come")
+        Files.writeJsonOutput()
+    if xmlout == 1:
+        Files.writeXmlOutput()
 
 def ThreadScan(dsthost,Sport,Eport,scantyp,que):
     sock = create_Socket(dsthost,scantyp)
     output = Output(host=dsthost)
-    for dp in range(Sport,Eport + 1):
+    for dp in range(Sport,Eport):
         if scantyp == "TCPportscan":
             result = sock.TCPportscan(dp)
         if scantyp == "TCPsascan":
@@ -66,16 +63,19 @@ def ThreadScan(dsthost,Sport,Eport,scantyp,que):
 
 def SplitThreads(Sport,Eport,Threads):
     list = []
-    amount = (Eport - Sport)
-    if (Eport - Sport) % Threads == 0:
-        jumps = amount / Threads
+    if Sport == 1:
+        amount = Eport
+    else:
+        amount = (Eport - Sport)
+    if (amount) % Threads == 0:
+        jumps = int(amount / Threads)
         for i in range(Threads):
             data = [int(Sport), int(Sport + jumps)]
             list.append(data)
             Sport = Sport + int(jumps)
     else:
         jumps = int(amount / Threads)
-        for i in range (Threads):
+        for i in range(Threads):
             data = [int(Sport), int(Sport + jumps)]
             list.append(data)
             Sport = Sport + int(jumps)
