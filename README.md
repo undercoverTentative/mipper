@@ -16,7 +16,7 @@ scan:
 The application is also capable of showing old scan
 result and multithreading.
 
-##HOW TO INSTALL THE APPLICATION
+## HOW TO INSTALL THE APPLICATION
 
 simply clone the git repository onto your own
 system
@@ -24,14 +24,14 @@ system
 git clone [URL]
 
 
-##HOW TO RUN THE APPLICATION ON WINDOWS
+## HOW TO RUN THE APPLICATION ON WINDOWS
 
 Simply execute the mipper.bat file and use your
 favorite web browser to see the mipper frontend
 on http://127.0.0.1:5000/.
 
 
-##HOW TO RUN THE APPLICATION ON Linux
+## HOW TO RUN THE APPLICATION ON Linux
 
 Simply execute the mipper.sh file and use your
 favorite web browser to see the mipper frontend
