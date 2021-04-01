@@ -2,4 +2,4 @@
 
 export FLASK_APP=main.py
 
-python3.7 -m lask run
+python3.7 -m flask run
