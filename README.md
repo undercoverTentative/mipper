@@ -21,7 +21,7 @@ result and multithreading.
 simply clone the git repository onto your own
 system
 
-git clone [URL]
+git clone https://github.com/undercoverTentative/mipper
 
 
 ## HOW TO RUN THE APPLICATION ON WINDOWS
