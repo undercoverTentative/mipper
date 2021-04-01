@@ -1,2 +1,3 @@
 set FLASK_APP=main.py
-python -m flask run
+
+python3.7 -m flask run
