@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-
+  <a href="/new_scan"><button class="btn"><i class="fa fa-download"></i> Start a new scan</button></a>
 <h1>Result of the mipper port scanner</h1>
 <table class="center">
   <thead>
@@ -29,9 +29,34 @@
     </tbody>
 </table>
 <a href="/download_db"><button class="btn"><i class="fa fa-download"></i> Download DB</button></a><br>
-<a href="/download_json"><button class="btn"><i class="fa fa-download"></i> Download JSON</button></a><br>
-<a href="/download_xml"><button class="btn"><i class="fa fa-download"></i> Download XML</button></a>
+{% if json_present %}
+  <a href="/download_json"><button class="btn"><i class="fa fa-download"></i> Download JSON</button></a><br>
+{% endif %}
+{% if xml_present %}
+  <a href="/download_xml"><button class="btn"><i class="fa fa-download"></i> Download XML</button></a><br>
+{% endif %}
 
+<h1>Old scan results</h1>
+<table class="center">
+  <thead>
+    <tr>
+      Date old scan results
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in older_scans_result %}
+      <tr>
+        <td>{{row}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<form class="form" action="old_results" method="post">
+  <label for="filename">Give date of older scan result who ar display in the "Old scan results" table</label><br>
+  <input type="text" id="filename" name="filename" value="Default"><br>
+  <input type="submit" value="Show result of old scan">
+</form>
 
 </body>
 </html>
