@@ -2,11 +2,11 @@
 <html>
 <head>
   <title>Page Title</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <a href="/new_scan"><button class="btn"><i class="fa fa-download"></i> Start a new scan</button></a>
+  <a href="/new_scan"><button class="btn"><i class="fas fa-bacteria"></i> Start a new scan</button></a>
 <h1>Result of the mipper port scanner</h1>
 <table class="center">
   <thead>
@@ -53,7 +53,7 @@
 </table>
 
 <form class="form" action="old_results" method="post">
-  <label for="filename">Give date of older scan result who ar display in the "Old scan results" table</label><br>
+  <label for="filename">Copy the date of older scan result who ar display in the "Old scan results" table and past it into the textbox to see the results of this scan</label><br>
   <input type="text" id="filename" name="filename" value="Default"><br>
   <input type="submit" value="Show result of old scan">
 </form>

@@ -110,22 +110,22 @@ class create_Socket:
 
 
     def UDPscan(self,dp):
-            """
-            NAME
-                UDPscan
+        """
+        NAME
+            UDPscan
 
-            DESCRIPTION
-                Executes a UDP scan with the scapy module for a single port
+        DESCRIPTION
+            Executes a UDP scan with the scapy module for a single port
 
-            INPUT
-                dp = A type int between 1-65535. This represents the port for the host to test
+        INPUT
+            dp = A type int between 1-65535. This represents the port for the host to test
 
-            RESULT
-                Returns a list
-                    ['scantype','result','port']
-                result 0 means a anwser have been received
-                result 1 means no awnser could be receive due to timeout
-            """
+        RESULT
+            Returns a list
+                ['scantype','result','port']
+            result 0 means a anwser have been received
+            result 1 means no awnser could be receive due to timeout
+        """
         self.output["port"] = dp
         ans, unans = sr(IP(dst=self.host)/UDP(dport=dp),timeout=5,verbose=0)
         if ans:

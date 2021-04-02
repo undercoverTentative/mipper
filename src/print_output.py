@@ -40,8 +40,8 @@ class Output:
         """
 
         if succes == 0:
-            result = True
+            result = "Open"
             print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
         else:
-            result = False
+            result = "Closed"
             print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))

@@ -53,7 +53,7 @@ class PrintOutput:
         """
         NAME
             AppendToJson
-            
+
         DESCRIPTION
             Adds a result from a port scan to the json file
 
@@ -82,7 +82,7 @@ class PrintOutput:
             Adds a result from a port scan to the xml file
 
         INPUT
-            result  = A boolean value
+            result  = Open or Closed
             port    = A port between 0 - 65535
 
         RESULT
@@ -102,7 +102,7 @@ class PrintOutput:
             Adds a result from a port scan to the db file
 
         INPUT
-            result  = A boolean value
+            result  = Open or Closed
             port    = A port between 0 - 65535
 
         RESULT
@@ -128,7 +128,7 @@ class PrintOutput:
             Returns no output
         """
 
-        self.cur.execute('''CREATE TABLE scan (host text, port int, result bool, scantype text)''')
+        self.cur.execute('''CREATE TABLE scan (host text, port int, result text, scantype text)''')
 
     def Checkdb(self):
         """
@@ -218,8 +218,8 @@ class PrintOutput:
             resultConvert
 
         DESCRIPTION
-            Change the type of variable result from int to boolean. if result
-            is 0 this function will return a boolean True, and vice versa.
+            Change the type of variable result from int to a string. if result
+            is 0 this function will return a String "Open", and "Closed" for 1.
 
         INPUT
             Result of the type int
@@ -228,6 +228,6 @@ class PrintOutput:
             Returns a boolean value.
         """
         if result == 0:
-            return True
+            return "Open"
         if result == 1:
-            return False
+            return "Closed"

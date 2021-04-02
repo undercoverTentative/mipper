@@ -124,8 +124,8 @@ def get_old_scan_result():
     files = os.listdir(dir)
     for file in files:
         if file.endswith("db"):
-            if file == "Default":
-                data.append(file)
+            if file == "Default.db":
+                data.append(file[:-3])
             else:
                 data.append(file[8:-3])
     return data
@@ -230,13 +230,13 @@ def download_xml():
 def show_old_results():
     older_scans_result = []
     if request.method == "POST":
-        result = re.match(r"(\A\d{2}[_]\d{2}[_]\d{4}[_]\d{2}[_]\d{2}[_]\d{2}\b|^\s*$)",request.form['filename'])
+        result = re.match(r"(\A\d{2}[_]\d{2}[_]\d{4}[_]\d{2}[_]\d{2}[_]\d{2}\b|\ADefault)",request.form['filename'])
         if result == None:
             error = "Input didn't match the request format to retreive infromation from old scan results.\
-            Format has to be as follow '01_01_0101_01_01'"
+            Format has to be as follow '01_01_0101_01_01' or Default"
             return render_template("error.html", error=error)
         else:
-            if request.form['filename'] == "":
+            if request.form['filename'] == "Default":
                 dbfile = "Default.db"
                 xmlfile = "Default.xml"
                 jsonfile = "Default.json"
@@ -250,7 +250,8 @@ def show_old_results():
             cursor.execute("SELECT * FROM scan ORDER BY port ASC")
             data = cursor.fetchall()
             return render_template('result.html', data=data, xml_present=os.path.isfile(xmlfile), json_present=os.path.isfile(jsonfile), older_scans_result=older_scans_result)
-
+    else:
+        return render_template('error.html', error="The page has a error please try again")
 
 @app.route('/new_scan', methods=['GET','POST'])
 def back_to_main_page():

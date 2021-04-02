@@ -31,3 +31,11 @@ td {
   margin-left: auto;
   margin-right: auto;
 }
+
+input[type=submit] {
+  background-color: rgb(102, 255, 51)
+}
+
+input[type=text] {
+  text-align: center;
+}
