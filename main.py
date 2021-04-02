@@ -14,6 +14,30 @@ if __name__ == '__main__':
 
 
 def run_mipper(host,Sport,Eport,scantype,threads,jsonout,xmlout):
+
+    """
+    NAME
+        run_mipper
+
+    DESCRIPTION
+        This function will execute the mipper program. The function will create
+        the needed threads that have been specified by user in the flask frontend.
+        It alsof will seperate the amount of specified ports into list so each
+        thread will have the same amount of workload.
+
+    INPUT
+        host  = A IPv4 address wich has to be scanned
+        Sport = Starting port in the range to execute the scan. Has to be a type int an a value between 1-65535
+        Eport = Ending Port in the range to execute the scan. Has to be a type int an a value between 1-65535
+        scantype = A string value with the folling options;  "TCPportscan", "TCPsascan", "UDPscan", "XMASscan"
+        threads = The amount of threads the user want to use. Has to be a type int
+        jsonout = If value is set to 1 a .json file will be created to display the old_results
+        xmlout = If value is set to 1 a .xml file will be created to display the old_results
+
+    RESULT
+        Returns no output
+    """
+
     Files = PrintOutput(host,scantype)
     global last_scan
     last_scan = [Files.filename + ".db", Files.filename + ".xml", Files.filename + ".json"]
@@ -42,6 +66,26 @@ def run_mipper(host,Sport,Eport,scantype,threads,jsonout,xmlout):
         Files.writeXmlOutput()
 
 def ThreadScan(dsthost,Sport,Eport,scantyp,que):
+    """
+    NAME
+        ThreadScan
+
+    DESCRIPTION
+        This function will execute the mipper program. The function will create
+        the needed threads that have been specified by user in the flask frontend.
+        It alsof will seperate the amount of specified ports into list so each
+        thread will have the same amount of workload.
+
+    INPUT
+        dsthost  = A IPv4 address of the host that have to be scanned
+        Sport = Starting port in the range to execute the scan. Has to be a type int an a value between 1-65535
+        Eport = Ending Port in the range to execute the scan. Has to be a type int an a value between 1-65535
+        scantype = A string value with the folling options;  "TCPportscan", "TCPsascan", "UDPscan", "XMASscan"
+        que = A que for storing the data of the results for different Threads
+
+    RESULT
+        Returns no output
+    """
     sock = create_Socket(dsthost,scantyp)
     output = Output(host=dsthost)
     for dp in range(Sport,Eport):
@@ -60,6 +104,21 @@ def ThreadScan(dsthost,Sport,Eport,scantyp,que):
         que.put(data)
 
 def get_old_scan_result():
+
+    """
+    NAME
+        get_old_scan_result
+
+    DESCRIPTION
+        This function will output the filename of old scan result for displaying
+        in the html frontend.
+
+    INPUT
+        Needs no input
+
+    RESULT
+        Returns a list of filenames from old scan results
+    """
     data = []
     dir = "./"
     files = os.listdir(dir)
@@ -72,6 +131,24 @@ def get_old_scan_result():
     return data
 
 def SplitThreads(Sport,Eport,Threads):
+
+    """
+    NAME
+        SplitThreads
+
+    DESCRIPTION
+        This function will split the amount of ports (Sport - Eport) into a list of ranges for
+        the threads to execute the port scans.
+
+    INPUT
+        Sport = Starting port in the range to execute the scan. Has to be a type int an a value between 1-65535
+        Eport = Ending Port in the range to execute the scan. Has to be a type int an a value between 1-65535
+        threads = The amount of threads to devide the ranges
+
+    RESULT
+        Returns a list ranges with each item in the list consist of a Sport and Eport.
+    """
+
     list = []
     if Sport == 1:
         amount = Eport
