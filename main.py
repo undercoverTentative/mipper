@@ -4,7 +4,6 @@ from threading import Thread,Lock
 from src.create_socket import create_Socket
 from src.print_output import Output
 from src.create_output import PrintOutput
-from src.read_db import ReadDB
 import queue
 
 lock = Lock()
