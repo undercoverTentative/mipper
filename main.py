@@ -52,6 +52,7 @@ def run_mipper(host,Sport,Eport,scantype,threads,jsonout,xmlout):
         for i in threadlist:
             i.join()
     else:
+        Eport = Eport + 1
         ThreadScan(host,Sport,Eport,scantype,q)
     for i in range(q.qsize()):
         data = q.get()
@@ -128,6 +129,7 @@ def get_old_scan_result():
                 data.append(file[:-3])
             else:
                 data.append(file[8:-3])
+    print(data)
     return data
 
 def SplitThreads(Sport,Eport,Threads):
@@ -184,7 +186,7 @@ def get_value():
         if int(request.form['sport']) > 0 and int(request.form['sport']) <= 65535:
             if int(request.form['eport']) > 0 and int(request.form['eport']) <= 65535:
                 if int(request.form['sport']) < int(request.form['eport']):
-                    if ((int(request.form['eport']) - int(request.form['sport'])) > int(request.form['threads'])):
+                    if ((int(request.form['eport']) - int(request.form['sport'])) >= int(request.form['threads'])):
                         try:
                             ipaddress.ip_address(request.form['Host'])
                             run_mipper(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']),int(request.form['jsonout']),int(request.form['xmlout']))

@@ -99,14 +99,18 @@ class create_Socket:
         """
         self.output["port"] = dp
         ans, unans = sr(IP(dst=self.host)/TCP(dport=dp,flags="S"),timeout=5,verbose=0)
-        for s,r in ans:
-            result = r[TCP].flags.flagrepr()
-            if result == "SA":
-                self.output["result"] = 0
-                return self.output
-            else:
-                self.output["result"] = 1
-                return self.output
+        if ans:
+            for s,r in ans:
+                result = r[TCP].flags.flagrepr()
+                if result == "SA":
+                    self.output["result"] = 0
+                    return self.output
+                else:
+                    self.output["result"] = 1
+                    return self.output
+        else:
+            self.output["result"] = 1
+            return self.output
 
 
     def UDPscan(self,dp):
