@@ -1,16 +1,16 @@
 from flask import Flask,render_template,request,send_from_directory,send_file
-import sys,os,sqlite3,re
+import sys,os,sqlite3,re,queue,ipaddress
 from threading import Thread,Lock
 from src.create_socket import create_Socket
 from src.print_output import Output
 from src.create_output import PrintOutput
-import queue
+
 
 lock = Lock()
 app = Flask(__name__)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
 
 def run_mipper(host,Sport,Eport,scantype,threads,jsonout,xmlout):
@@ -184,17 +184,23 @@ def get_value():
         if int(request.form['sport']) > 0 and int(request.form['sport']) <= 65535:
             if int(request.form['eport']) > 0 and int(request.form['eport']) <= 65535:
                 if int(request.form['sport']) < int(request.form['eport']):
-                    if ((int(request.form['eport']) - int(request.form['sport'])) < int(request.form['threads'])):
+                    if ((int(request.form['eport']) - int(request.form['sport'])) > int(request.form['threads'])):
+                        try:
+                            ipaddress.ip_address(request.form['Host'])
+                            run_mipper(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']),int(request.form['jsonout']),int(request.form['xmlout']))
+                            older_scans_result = get_old_scan_result()
+                            con = sqlite3.connect(last_scan[0])
+                            cursor = con.cursor()
+                            cursor.execute("SELECT * FROM scan ORDER BY port ASC")
+                            data = cursor.fetchall()
+                            return render_template('result.html', data=data, xml_present=os.path.isfile(last_scan[1]), json_present=os.path.isfile(last_scan[2]), older_scans_result=older_scans_result)
+                        except ValueError:
+                            error = "The given IPaddress by the user doesnt represent a IPv4 address"
+                            return render_template('error.html', error=error)
+                    else:
                         error = "The amount of threads are more than the amount of ports to scan"
                         return render_template('error.html', error=error)
-                    else:
-                        run_mipper(request.form['Host'],int(request.form['sport']),int(request.form['eport']),request.form['scan'],int(request.form['threads']),int(request.form['jsonout']),int(request.form['xmlout']))
-                        older_scans_result = get_old_scan_result()
-                        con = sqlite3.connect(last_scan[0])
-                        cursor = con.cursor()
-                        cursor.execute("SELECT * FROM scan ORDER BY port ASC")
-                        data = cursor.fetchall()
-                        return render_template('result.html', data=data, xml_present=os.path.isfile(last_scan[1]), json_present=os.path.isfile(last_scan[2]), older_scans_result=older_scans_result)
+
                 else:
                     error = "End port needs to be greater than start port"
                     return render_template('error.html', error=error)
