@@ -38,10 +38,12 @@ class Output:
         RESULT
             Prints the result of a scan to the CLI with the print statement
         """
-
-        if succes == 0:
-            result = "Open"
-            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
-        else:
-            result = "Closed"
-            print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
+        try:
+            if succes == 0:
+                result = "Open"
+                print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
+            else:
+                result = "Closed"
+                print("Host: %s         Port: %s        Result: %s" % (self.host, port, result))
+        except ValueError:
+            print("The variable succes isn't of the type int")

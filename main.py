@@ -129,7 +129,6 @@ def get_old_scan_result():
                 data.append(file[:-3])
             else:
                 data.append(file[8:-3])
-    print(data)
     return data
 
 def SplitThreads(Sport,Eport,Threads):

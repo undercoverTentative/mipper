@@ -134,8 +134,13 @@ class create_Socket:
         ans, unans = sr(IP(dst=self.host)/UDP(dport=dp),timeout=5,verbose=0)
         if ans:
             for s,r in ans:
-                self.output["result"] = 0
-                return self.output
+                result = r[ICMP].type
+                if result == 3:
+                    self.output["result"] = 1
+                    return self.output
+                else:
+                    self.output["result"] = 0
+                    return self.output
         else:
             self.output["result"] = 1
             return self.output
