@@ -16,6 +16,10 @@ scan:
 The application is also capable of showing old scan
 result and multithreading.
 
+## REQUIRMENTS
+
+applications is build and tested on python3.7
+
 ## HOW TO INSTALL THE APPLICATION
 
 simply clone the git repository onto your own
